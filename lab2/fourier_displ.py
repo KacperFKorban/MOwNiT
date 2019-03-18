@@ -7,17 +7,24 @@ import matplotlib.pyplot as plt
 
 df = pd.read_csv('data.csv', parse_dates=['Datetime'])
 
-df.plot(x='Datetime', y='AEP_MW')
+# df.plot(x='Datetime', y='AEP_MW')
 
-plt.show()
+# plt.show()
 
 df['Datetime'] = df['Datetime'].apply(lambda x: x.timestamp())
 
 n = df.shape[0]
 
+freqs = fftfreq(n)
+
 df_fft = fft(df['AEP_MW'])
 
-plt.plot(np.abs(df_fft[1:n // 2]))
-
+plt.plot(freqs[1:n//2], np.abs(df_fft)[1:n//2])
+plt.xlabel('Frequency /hour')
+plt.ylabel('Frequency Domain (MW)')
 
 plt.show()
+
+"""Po zbadaniu transformaty dla zużycia prądu w USA,
+można wysunąć wnioski, że największe zmiany mają miejsce
+dobowo oraz kwartalnie"""
